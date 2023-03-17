@@ -1,0 +1,49 @@
+# prerequisites
+*.d
+
+# compiled object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# precompiled headers
+*.gch
+*.pch
+
+# compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# compiled static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# executables
+*.exe
+*.out
+*.app
+
+# executable and object folder
+bin/
+obj/
+
+# CMake files
+cmake-build-debug/
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# .idea
+.idea/

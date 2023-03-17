@@ -1,0 +1,3 @@
+[submodule "heatTransfer_tests/lib/googletest"]
+	path = heatTransfer_tests/lib/googletest
+	url = https://github.com/google/googletest.git
