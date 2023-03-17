@@ -18,3 +18,4 @@ make
 ```
 
 ## License
+[MIT](https://github.com/Rbbingham/heatTransferSim/LICENSE.txt)
