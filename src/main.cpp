@@ -8,11 +8,14 @@
 
 #include <cstdio>
 #include <unordered_map>
+#include <fstream>
+#include <vector>
 
 void usage ();
 
 int main (int argc, char *argv[]) {
     InputParser input(argc, argv);
+    std::vector<std::tuple<int, int, double>> heaters;
 
     if (input.cmdOptionExists("-h") ||  input.cmdOptionExists("--help")) {
         usage();
@@ -31,14 +34,47 @@ int main (int argc, char *argv[]) {
             {'c', input.getCmdOption("-c")},
             {'t', input.getCmdOption("-t")},
             {'k', input.getCmdOption("-k")},
-            {'s', input.getCmdOption("-s")}
+            {'s', input.getCmdOption("-s")},
+            {'i', input.getCmdOption("--input")},
+            {'o', input.getCmdOption("--output")}
     };
 
-    const std::string& inFile = input.getCmdOption("--input");
-    const std::string& outFile = input.getCmdOption("--output");
+    Room oldMatrix(std::stoi(commands['r']), std::stoi(commands['c']), std::stod(commands['t']));
 
-    Room matrix(std::stoi(commands['r']), std::stoi(commands['c']), std::stod(commands['t']));
-    matrix.print();
+    std::ifstream inFile("../../" + commands['i']);
+
+    if (inFile.good()) {
+        int ht;
+        inFile >> ht;
+
+        while (ht--) {
+            int row, col;
+            double temp;
+
+            inFile >> row >> col >> temp;
+            heaters.emplace_back(std::make_tuple(row, col, temp));
+        }
+    }
+
+    inFile.close();
+
+    Room newMatrix = oldMatrix;
+    int timesteps = std::stoi(commands['s']);
+    const double k = std::stod(commands['k']);
+
+    while (timesteps--) {
+        oldMatrix.setHeat(heaters);
+        oldMatrix.print();
+        printf("\n\n");
+
+        for (int i = 1; i < newMatrix.getRows() - 1; ++i) {
+            for (int j = 1; j < newMatrix.getCols() - 1; ++j) {
+                newMatrix.calculateTemp(oldMatrix, i, j, k);
+            }
+        }
+
+        oldMatrix = newMatrix;
+    }
 
     return 0;
 }
