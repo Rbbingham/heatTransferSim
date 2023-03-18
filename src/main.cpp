@@ -1,6 +1,9 @@
-//
-// Created by rbb13 on 3/16/2023.
-//
+/*
+ * Author: Robert Bingham
+ * Description: a heat distribution simulation based on the formula:
+ *      Tnew = (Told + (k*(Ttop + Tbottom + Tleft + Tright + Ttop_left + Tbottom_left + Ttop_right + Tbottom_right))/8.0)/2.0.
+ *      Each 'T' represents a temperature value in a matrix and 'k' represents the transfer rate.
+ */
 
 #include "InputParser.h"
 #include "Room.h"
@@ -11,23 +14,28 @@
 #include <fstream>
 #include <vector>
 
+// manual page for program
 void usage ();
 
 int main (int argc, char *argv[]) {
+    // initialize command line parser and vector for heater positions
     InputParser input(argc, argv);
     std::vector<std::tuple<int, int, double>> heaters;
 
+    // if command -h or --help was given, output usage
     if (input.cmdOptionExists("-h") ||  input.cmdOptionExists("--help")) {
         usage();
         return 0;
     }
 
+    // don't run program if invalid number of arguments
     if (argc != 17 && argc != 9) {
         printf("    Invalid number of arguments\n"
                "    Type ./heatTransferSim -h for help\n");
         return 0;
     }
 
+    // store our arguments in map
     std::unordered_map <char, std::string> commands = {
             {'n', input.getCmdOption("-n")},
             {'r', input.getCmdOption("-r")},
@@ -39,10 +47,12 @@ int main (int argc, char *argv[]) {
             {'o', input.getCmdOption("--output")}
     };
 
+    // initialize the matrix with basetemp = k
     Room oldMatrix(std::stoi(commands['r']), std::stoi(commands['c']), std::stod(commands['t']));
 
     std::ifstream inFile("../../" + commands['i']);
 
+    // get heater positions from file
     if (inFile.good()) {
         int ht;
         inFile >> ht;
@@ -58,12 +68,16 @@ int main (int argc, char *argv[]) {
 
     inFile.close();
 
+    // initialize a copy of the old matrix and set heaters
     Room newMatrix = oldMatrix;
     oldMatrix.setHeat(heaters);
+
     int timesteps = std::stoi(commands['s']);
     const double k = std::stod(commands['k']);
     const int thread_count = std::stoi(commands['n']);
+    double totalTime = 0;
 
+    // outputs starting matrix
     printf("Starting matrix: \n");
     oldMatrix.print();
     printf("\n\n");
@@ -72,6 +86,7 @@ int main (int argc, char *argv[]) {
         double start = omp_get_wtime();
         double end;
 
+        // parallelize with each thread having a row to themselves
         omp_set_num_threads(thread_count);
         #pragma omp parallel for default(none) shared(newMatrix, oldMatrix, k)
         for (int i = 1; i < newMatrix.getRows() - 1; ++i) {
@@ -82,12 +97,19 @@ int main (int argc, char *argv[]) {
 
         end = omp_get_wtime();
 
+        // copy values to the old matrix and reset the heaters
         oldMatrix = newMatrix;
         oldMatrix.setHeat(heaters);
+
+        // print values and time elapsed
         oldMatrix.print();
-        printf("Time elapsed: %f\n\n", start - end);
+        printf("Time elapsed: %f\n\n", end - start);
+        totalTime += (end - start);
     }
 
+    printf("Total time elapsed: %f", totalTime);
+
+    // output to file
     std::ofstream outFile("../../" + commands['o']);
     if (outFile.good()) {
         for (int i = 0; i < oldMatrix.getRows() - 2; ++i) {

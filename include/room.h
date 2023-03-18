@@ -11,8 +11,8 @@ private:
     int nCols;
 
 public:
-    Room (const int& numRows, const int& numCols, const double& baseTemp);
-    Room (const Room& right);
+    Room (const int& numRows, const int& numCols, const double& baseTemp); // constructor
+    Room (const Room& right); // copy constructor
     ~Room ();
 
     inline int getRows () const { return nRows; }
@@ -22,5 +22,5 @@ public:
     void calculateTemp (Room& old, int row, int col, const double& k);
     void print ();
 
-    Room& operator=(const Room& right);
+    Room& operator=(const Room& right); // assignment operator overload
 };

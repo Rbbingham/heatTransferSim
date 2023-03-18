@@ -3,13 +3,17 @@
 #include <cstdio>
 #include <stdexcept>
 
+// constructor: initializes matrix of size numRows x numCols with value baseTemp
 Room::Room (const int& numRows, const int& numCols, const double& baseTemp) : nRows(numRows + 2), nCols(numCols + 2) {
+    // create array of pointers
     matrix = std::make_unique<std::unique_ptr<double[]>[]> (numRows + 2);
 
     for (int i = 0; i < numRows + 2; ++i) {
+        // create pointers that point to array of doubles
         matrix[i] = std::make_unique<double[]> (numCols + 2);
     }
 
+    // set each value to baseTemp
     for (int i = 0; i < numRows + 2; ++i) {
         for (int j = 0; j < numCols + 2; ++j) {
             matrix[i][j] = baseTemp;
@@ -17,13 +21,17 @@ Room::Room (const int& numRows, const int& numCols, const double& baseTemp) : nR
     }
 }
 
+// copy constructor: initialize new matrix with the same values as right matrix
 Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
+    // create array of pointers
     this->matrix = std::make_unique<std::unique_ptr<double[]>[]> (right.nRows);
 
     for (int i = 0; i < right.nRows; ++i) {
+        // create pointers that point to array of doubles
         this->matrix[i] = std::make_unique<double[]> (right.nCols);
     }
 
+    // set new matrix values to that of right matrix
     for (int i = 0; i < right.nRows; ++i) {
         for (int j = 0; j < right.nCols; ++j) {
             this->matrix[i][j] = right.matrix[i][j];
@@ -31,14 +39,17 @@ Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
     }
 }
 
+// default for unique pointers
 Room::~Room () = default;
 
+// sets the heaters
 void Room::setHeat(std::vector<std::tuple<int, int, double>> heaters) {
     for (auto i : heaters) {
         matrix[std::get<0>(i) + 1][std::get<1>(i) + 1] = std::get<2>(i);
     }
 }
 
+// calculate the temp of cell[row][col] based on old matrix and k value
 void Room::calculateTemp(Room& old, int row, int col, const double &k) {
     double factor = old.matrix[row - 1][col] + old.matrix[row + 1][col] + old.matrix[row][col - 1] + old.matrix[row][col + 1] +
             old.matrix[row - 1][col - 1] + old.matrix[row - 1][col + 1] + old.matrix[row + 1][col - 1] + old.matrix[row + 1][col + 1];
@@ -46,6 +57,7 @@ void Room::calculateTemp(Room& old, int row, int col, const double &k) {
     this->matrix[row][col] = (old.matrix[row][col] + (k * factor) / 8.0) / 2.0;
 }
 
+// prints the values of the matrix as long as its dimensions are acceptable
 void Room::print () {
     if (nRows > 15 || nCols > 15) {
         printf("(Matrix dimensions to large to show)\n");
@@ -68,7 +80,9 @@ void Room::print () {
     }
 }
 
+// assignment operator: takes left matrix and right matrix and sets left matrix's values equal to right matrix's values
 Room& Room::operator=(const Room& right){
+    // if the same matrix return or if different dimensions throw error
     if (&right == this) {
         return *this;
     }

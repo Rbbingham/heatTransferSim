@@ -2,12 +2,14 @@
 
 #include <algorithm>
 
+// constructor: throws each argument in vector of strings
 InputParser::InputParser (int &argc, char **argv) {
     for (int i=1; i < argc; ++i) {
         this->tokens.emplace_back(std::string(argv[i]));
     }
 }
 
+// finds argument "option" and returns the values immediately after argument
 const std::string& InputParser::getCmdOption (const std::string &option) const {
     std::vector<std::string>::const_iterator itr;
     itr = std::find(this->tokens.begin(), this->tokens.end(), option);
@@ -16,10 +18,12 @@ const std::string& InputParser::getCmdOption (const std::string &option) const {
         return *itr;
     }
 
+    // if not found return empty string
     static const std::string empty_string("");
     return empty_string;
 }
 
+// check of argument exists
 bool InputParser::cmdOptionExists (const std::string &option) const {
     return std::find(this->tokens.begin(), this->tokens.end(), option) != this->tokens.end();
 }
