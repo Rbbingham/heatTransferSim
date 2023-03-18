@@ -35,7 +35,7 @@ Room::~Room () = default;
 
 void Room::setHeat(std::vector<std::tuple<int, int, double>> heaters) {
     for (auto i : heaters) {
-        matrix[std::get<0>(i)][std::get<1>(i)] = std::get<2>(i);
+        matrix[std::get<0>(i) + 1][std::get<1>(i) + 1] = std::get<2>(i);
     }
 }
 
@@ -47,11 +47,21 @@ void Room::calculateTemp(Room& old, int row, int col, const double &k) {
 }
 
 void Room::print () {
+    if (nRows > 15 || nCols > 15) {
+        printf("(Matrix dimensions to large to show)\n");
+        return;
+    }
+
     for (int i = 1; i < nRows - 1; ++i) {
         printf("[ ");
 
         for (int j = 1; j < nCols - 1; ++j) {
-            printf("%.2f, ", matrix[i][j]);
+            if (j == nCols - 2) {
+                printf("%.4f", matrix[i][j]);
+                break;
+            }
+
+            printf("%.4f, ", matrix[i][j]);
         }
 
         printf(" ]\n");

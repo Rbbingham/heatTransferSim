@@ -59,22 +59,46 @@ int main (int argc, char *argv[]) {
     inFile.close();
 
     Room newMatrix = oldMatrix;
+    oldMatrix.setHeat(heaters);
     int timesteps = std::stoi(commands['s']);
     const double k = std::stod(commands['k']);
+    const int thread_count = std::stoi(commands['n']);
+
+    printf("Starting matrix: \n");
+    oldMatrix.print();
+    printf("\n\n");
 
     while (timesteps--) {
-        oldMatrix.setHeat(heaters);
-        oldMatrix.print();
-        printf("\n\n");
+        double start = omp_get_wtime();
+        double end;
 
+        omp_set_num_threads(thread_count);
+        #pragma omp parallel for default(none) shared(newMatrix, oldMatrix, k)
         for (int i = 1; i < newMatrix.getRows() - 1; ++i) {
             for (int j = 1; j < newMatrix.getCols() - 1; ++j) {
                 newMatrix.calculateTemp(oldMatrix, i, j, k);
             }
         }
 
+        end = omp_get_wtime();
+
         oldMatrix = newMatrix;
+        oldMatrix.setHeat(heaters);
+        oldMatrix.print();
+        printf("Time elapsed: %f\n\n", start - end);
     }
+
+    std::ofstream outFile("../../" + commands['o']);
+    if (outFile.good()) {
+        for (int i = 0; i < oldMatrix.getRows() - 2; ++i) {
+            for (int j = 0; j < oldMatrix.getCols() - 2; ++j) {
+                outFile << oldMatrix.getTemp(i, j) << ", ";
+            }
+            outFile << "\n";
+        }
+    }
+
+    outFile.close();
 
     return 0;
 }

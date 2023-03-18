@@ -17,6 +17,7 @@ public:
 
     inline int getRows () const { return nRows; }
     inline int getCols () const { return nCols; }
+    inline double getTemp (int i, int j) const { return matrix[i + 1][j + 1]; }
     void setHeat (std::vector<std::tuple<int, int, double>> heaters);
     void calculateTemp (Room& old, int row, int col, const double& k);
     void print ();

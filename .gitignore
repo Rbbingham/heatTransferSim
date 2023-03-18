@@ -47,3 +47,7 @@ _deps
 
 # .idea
 .idea/
+
+# ignore txt and csv
+*.txt
+*.csv
