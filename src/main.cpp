@@ -6,7 +6,7 @@
  */
 
 #include "InputParser.h"
-#include "Room.h"
+#include "room.h"
 #include "omp.h"
 
 #include <cstdio>
@@ -73,7 +73,7 @@ int main (int argc, char *argv[]) {
     oldMatrix.setHeat(heaters);
 
     int timesteps = std::stoi(commands['s']);
-    const double k = std::stod(commands['k']);
+    double k = std::stod(commands['k']);
     const int thread_count = std::stoi(commands['n']);
     double totalTime = 0;
 
