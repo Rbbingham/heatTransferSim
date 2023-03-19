@@ -10,7 +10,7 @@ if(OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fopenmp")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17 -fopenmp")
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD 17)
@@ -18,6 +18,7 @@ set(CMAKE_CXX_STANDARD 17)
 # add the directories for the build
 add_subdirectory("src")
 add_subdirectory("lib/googletest")
+add_subdirectory("lib/fltk")
 add_subdirectory("test")
 
 enable_testing()

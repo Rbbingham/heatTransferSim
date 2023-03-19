@@ -1,6 +1,7 @@
 #include "InputParser.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 // constructor: throws each argument in vector of strings
 InputParser::InputParser (int &argc, char **argv) {
@@ -19,8 +20,7 @@ const std::string& InputParser::getCmdOption (const std::string &option) const {
     }
 
     // if not found return empty string
-    static const std::string empty_string("");
-    return empty_string;
+    throw std::invalid_argument(option);
 }
 
 // check of argument exists
