@@ -31,12 +31,7 @@ Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
         this->matrix[i] = std::make_unique<float[]> (right.nCols);
     }
 
-    // set new matrix values to that of right matrix
-    for (int i = 0; i < right.nRows; ++i) {
-        for (int j = 0; j < right.nCols; ++j) {
-            this->matrix[i][j] = right.matrix[i][j];
-        }
-    }
+    *this = right;
 }
 
 // default for unique pointers
