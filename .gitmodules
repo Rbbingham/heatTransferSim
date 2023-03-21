@@ -4,3 +4,6 @@
 [submodule "lib/fltk"]
 	path = lib/fltk
 	url = https://github.com/fltk/fltk.git
+[submodule "lib/googletest"]
+	path = lib/googletest
+	url = git@github.com:Rbbingham/heatTransferSim.git
