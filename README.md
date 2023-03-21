@@ -3,19 +3,19 @@ heatTransferSim is just as the name describes. It is a simulation of heat being 
 transfer rate of **k**.
 
 ## Installation
-Just clone this repository.
+Just clone this repository with the submodules.
 
 ```
-git clone https://github.com/Rbbingham/heatTransferSim.git
+git clone --recurse-submodules https://github.com/Rbbingham/heatTransferSim.git
 ```
 
 ## Usage
-Build the project using cmake and make.
+Build the project using cmake and make. Be sure to specify the PATH to the g++ compiler down below.
 
 ```
 mkdir build
 cd build
-cmake ..
+cmake -D CMAKE_CXX_COMPILER=<path/to/g++> ..
 make
 make test
 ```

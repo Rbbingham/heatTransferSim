@@ -30,6 +30,7 @@
 # executable and object folder
 bin/
 obj/
+build/
 
 # CMake files
 cmake-build-debug/
@@ -45,8 +46,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# .idea
+# .idea and .vscode
 .idea/
+.vscode/
 
 # ignore txt and csv
 *.txt

@@ -3,10 +3,12 @@
 #include <cstdio>
 #include <stdexcept>
 
+Room::Room () : matrix(nullptr), nRows(0), nCols(0) {}
+
 // constructor: initializes matrix of size numRows x numCols with value baseTemp
 Room::Room (const int& numRows, const int& numCols, const float& baseTemp) : nRows(numRows + 2), nCols(numCols + 2) {
     // create array of pointers
-    matrix = std::make_unique<std::unique_ptr<float[]>[]> (numRows + 2);
+    this->matrix = std::make_unique<std::unique_ptr<float[]>[]> (numRows + 2);
 
     for (int i = 0; i < numRows + 2; ++i) {
         // create pointers that point to array of doubles
@@ -38,7 +40,7 @@ Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
 Room::~Room () = default;
 
 // sets the heaters
-void Room::setHeat(const std::vector<std::tuple<int, int, float>>& heaters) {
+void Room::setHeat(std::vector<std::tuple<int, int, float>>& heaters) {
     for (auto i : heaters) {
         matrix[std::get<0>(i) + 1][std::get<1>(i) + 1] = std::get<2>(i);
     }
