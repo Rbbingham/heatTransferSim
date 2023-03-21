@@ -4,7 +4,7 @@
 #include <cmath>
 
 TEST(BasicTests, Input) {
-    std::vector<std::tuple<int, int, double>> heaters;
+    std::vector<std::tuple<int, int, float>> heaters;
     heaters.emplace_back(std::make_tuple(1, 1, 60.0));
     heaters.emplace_back(std::make_tuple(5, 5, 60.0));
     heaters.emplace_back(std::make_tuple(9, 9, 10.0));

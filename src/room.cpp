@@ -43,7 +43,7 @@ Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
 Room::~Room () = default;
 
 // sets the heaters
-void Room::setHeat(const std::vector<std::tuple<int, int, float>>& heaters) {
+void Room::setHeat(std::vector<std::tuple<int, int, float>>& heaters) {
     for (auto i : heaters) {
         matrix[std::get<0>(i) + 1][std::get<1>(i) + 1] = std::get<2>(i);
     }
