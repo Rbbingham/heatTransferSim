@@ -1,5 +1,5 @@
 [submodule "heatTransfer_tests/lib/googletest"]
-	path = heatTransfer_tests/lib/googletest
+	path = lib/googletest
 	url = https://github.com/google/googletest.git
 [submodule "lib/fltk"]
 	path = lib/fltk
