@@ -3,10 +3,12 @@
 #include <cstdio>
 #include <stdexcept>
 
+Room::Room () : matrix(nullptr), nRows(0), nCols(0) {}
+
 // constructor: initializes matrix of size numRows x numCols with value baseTemp
 Room::Room (const int& numRows, const int& numCols, const float& baseTemp) : nRows(numRows + 2), nCols(numCols + 2) {
     // create array of pointers
-    matrix = std::make_unique<std::unique_ptr<float[]>[]> (numRows + 2);
+    this->matrix = std::make_unique<std::unique_ptr<float[]>[]> (numRows + 2);
 
     for (int i = 0; i < numRows + 2; ++i) {
         // create pointers that point to array of doubles

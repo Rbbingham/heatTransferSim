@@ -11,6 +11,7 @@ private:
     int nCols;
 
 public:
+    Room();
     Room (const int& numRows, const int& numCols, const float& baseTemp); // constructor
     Room (const Room& right); // copy constructor
     ~Room ();
@@ -20,6 +21,7 @@ public:
     inline float getTemp (int i, int j) const { return matrix[i + 1][j + 1]; }
     void setHeat (std::vector<std::tuple<int, int, float>>& heaters);
     void calculateTemp (Room& old, int row, int col, const float& k);
+    void swap (Room& right);
     void print ();
 
     Room& operator=(const Room& right); // assignment operator overload
