@@ -3,8 +3,6 @@
 #include <cstdio>
 #include <stdexcept>
 
-Room::Room () : matrix(nullptr), nRows(0), nCols(0) {}
-
 // constructor: initializes matrix of size numRows x numCols with value baseTemp
 Room::Room (const int& numRows, const int& numCols, const float& baseTemp) : nRows(numRows + 2), nCols(numCols + 2) {
     // create array of pointers
@@ -33,11 +31,12 @@ Room::Room(const Room& right) : nRows(right.nRows), nCols(right.nCols) {
         this->matrix[i] = std::make_unique<float[]> (right.nCols);
     }
 
-    *this = right;
+    for (int i = 0; i < nRows; ++i) {
+        for (int j = 0; j < nCols; ++j) {
+            this->matrix[i][j] = right.matrix[i][j];
+        }
+    }
 }
-
-// default for unique pointers
-Room::~Room () = default;
 
 // sets the heaters
 void Room::setHeat(std::vector<std::tuple<int, int, float>>& heaters) {
@@ -76,22 +75,3 @@ void Room::print () {
         printf(" ]\n");
     }
 }
-
-// assignment operator: takes left matrix and right matrix and sets left matrix's values equal to right matrix's values
-Room& Room::operator=(const Room& right){
-    // if the same matrix return or if different dimensions throw error
-    if (&right == this) {
-        return *this;
-    }
-    else if ((this->nRows != right.nRows) || (this->nCols != right.nCols)) {
-        throw std::length_error("Matrix dimensions don't match.");
-    }
-
-    for (int i = 0; i < nRows; ++i) {
-        for (int j = 0; j < nCols; ++j) {
-            this->matrix[i][j] = right.matrix[i][j];
-        }
-    }
-
-    return *this;
-};
